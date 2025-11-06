@@ -16,8 +16,9 @@ struct inventory
 
 void inventory(struct inventory items[], int size)
 {
-    printf("Inventory List as on : \n");//add date here
+    printf("Inventory List as on : \n"); //add date here
  
+     printf("--------------------------------------------------------------------------\n");
     printf("%-10s %-20s %-10s %-10s %-10s%-10s\n", "Item Code", "Item Name", "GST Code", "Cost", "GST Rate","Quantity");
     printf("--------------------------------------------------------------------------\n");
 
@@ -25,6 +26,7 @@ void inventory(struct inventory items[], int size)
     {
         printf("%-10d %-20s %-10d %-10d %-10d %-10d\n",items[i].itemCode,items[i].name,items[i].gstCode,items[i].cost,items[i].gstRate,items[i].quantity);
     }
+     printf("--------------------------------------------------------------------------\n");
 }
 
 void AddNewItem(struct inventory items[],int size) 
@@ -87,37 +89,35 @@ void DeleteItem(struct inventory items[],int size)
     scanf("%s",name);
 
     int len = strlen(name);
-    int itemCode = 0;
+    int itemCode = -1;
+ 
     for(int i = 0; i < total_items ;i++)
     {
-        for(int j = 0; j<len;j++)
+        if(strcmp(name,items[i].name) == 0)
         {
-            int temp = 1;
-            while(temp != 0)
-            {
-                if(name[j] == items[i].name)
-                {
-                    itemCode = items[i].itemCode;
-                     temp = 1;
-                }
-                else
-                {
-                    temp = 0;
-                }
-           }
-      
+            itemCode = i;
+            break;
         }
     }
-    for(int i = itemCode; i <= total_items;i++)
+
+    if (itemCode == -1)
     {
-        items[i].itemCode = items[i+1].itemCode;
-        items[i].gstCode = items[i+1].gstCode;
-        items[i].cost = items[i+1].cost;
-        items[i].gstRate = items[i+1].gstRate;
-        
+        printf("Error... Item not in found in Inventory. PLease try again. \n");
     }
+    else
+   {
+
+    for(int i = itemCode; i < total_items -1 ;i++)
+    {
+        items[i] = items[i+1];
+        items[i].itemCode = i+1;
+    }
+    
+
     total_items --;
     printf("\nItem Deleted Successfully!\n");
+
+    }
 }
 
 
@@ -150,14 +150,14 @@ int main()
     case 1:
     do {
         printf("\n SHOPKEEPER PORTAL \n");
-        printf("1. View All Items\n");//show inventory
-        printf("2. Search Item (by Name or Code)\n");
-        printf("3. Add New Item\n");
-        printf("4. Delete Item\n");
-        printf("5. Update Quantity\n");
-        printf("6. Generate Bill\n");
-        printf("7. Show Low Stock Items\n");
-        printf("8. Exit\n");
+        printf("1. View All Items\n");//done
+        printf("2. Search Item (by Name or Code)\n");//D
+        printf("3. Add New Item\n");//done
+        printf("4. Delete Item\n"); //done
+        printf("5. Update Quantity\n");//EASY1
+        printf("6. Generate Bill\n");//MAJOR WRITE ME N U 
+        printf("7. Show Low Stock Items\n"); //EASY
+        printf("8. Exit\n");//done;
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -185,7 +185,7 @@ int main()
                 // low stock
                 break;
             case 8:
-                printf("Exiting program...\n");
+                printf("Exiting program...Thanks For Visiting.\n");
                 break;
             default:
                 printf("Invalid choice! Please try again.\n");
@@ -222,7 +222,7 @@ int main()
                 // low stock
                 break;
             case 5:
-                printf("Exiting program...\n");
+                printf("Exiting program...Thanks For Visiting.\n");
                 break;
             default:
                 printf("Invalid choice! Please try again.\n");
@@ -261,7 +261,7 @@ int main()
                 // low stock
                 break;
             case 6:
-                printf("Exiting program...\n");
+                printf("Exiting program... Thanks For Visiting.\n");
                 break;
             default:
                 printf("Invalid choice! Please try again.\n");
