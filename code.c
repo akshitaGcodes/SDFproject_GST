@@ -1,7 +1,5 @@
 /*
-
 2. Self checkout as 4th login 
-
 worst case scenario add gst motnly reports
 */
 #include <stdio.h>
@@ -15,7 +13,7 @@ struct User
 {
     char username[50];
     char password[50];
-    int login; // 4 hain for now (self checkout)
+    int login;
 } ;
 
 struct inventory
@@ -162,6 +160,7 @@ void AddNewItem(struct inventory items[],int size)
 
     total_items++;
     printf("\nItem Added Successfully!\n");
+    printf("%-10s %-20s %-10s %-10s %-10s%-10s\n", "Item Code", "Item Name", "GST Code", "Cost", "GST Rate","Quantity");
     printf("%-10d %-20s %-10d %-10d %-10d %-10d\n",items[total_items].itemCode,items[total_items].name,items[total_items].gstCode,items[total_items].cost,items[total_items].gstRate,items[total_items].quantity);
     }
 
@@ -242,6 +241,7 @@ void UpdateQuantity(struct inventory items[],int size)
     items[itemCode].quantity = quantity;
 
     printf("Quantity Updated Successfully..\n");
+    printf("%-10s %-20s %-10s %-10s %-10s%-10s\n", "Item Code", "Item Name", "GST Code", "Cost", "GST Rate","Quantity");
     printf("%-10d %-20s %-10d %-10d %-10d %-10d\n",items[itemCode].itemCode,items[itemCode].name,items[itemCode].gstCode,items[itemCode].cost,items[itemCode].gstRate,items[itemCode].quantity);
     
     }
@@ -251,20 +251,29 @@ void UpdateQuantity(struct inventory items[],int size)
 
 void generateBill(struct inventory items[],int size) 
 {   
-    
+    //void addItemToBill(items,total_items);
+
     return ;
 }
 
 void LowStock(struct inventory items[],int size) 
 {   
     int temp =0;
+    int found = 0;
 
     for(int i = 0; i < total_items ;i++)
     {
         if (items[i].quantity <= low_stock)
         {
             temp =1;
+            found++;
+            if(found == 1)
+            {
+                printf("\nLow Stock Items are :-\n");
+                printf("%-10s %-20s %-10s %-10s %-10s%-10s\n", "Item Code", "Item Name", "GST Code", "Cost", "GST Rate","Quantity");
+            }
             printf("%-10d %-20s %-10d %-10d %-10d %-10d\n",items[i].itemCode,items[i].name,items[i].gstCode,items[i].cost,items[i].gstRate,items[i].quantity);
+            found++;
         }
     }
     if(temp == 0)
@@ -283,7 +292,8 @@ int loginFun(struct User users[], int num_users)
     printf("Enter password: ");
     scanf("%49s",password );
 
-    for (int i = 0; i < num_users; ++i) {
+    for (int i = 0; i < num_users; ++i) 
+    {
         if (strcmp(username, users[i].username) == 0 && strcmp(password, users[i].password) == 0) 
         {
             printf("Login successful. Role: ");
@@ -334,13 +344,14 @@ int main()
 
 
     int login = 0;
-     printf("\n GST BILLING SYSTEM GENERATOR \n");
-     printf("Login with your credentials :- \n");
-     printf("1. Shopkeeper\n");
-     printf("2. Cashier(s)\n");
-     printf("3. Loader(Stock Updating)\n");
+    printf("\n GST BILLING SYSTEM GENERATOR \n");
+    printf("Login with your credentials :- \n");
+    printf("1. Shopkeeper\n");
+    printf("2. Cashier(s)\n");
+    printf("3. Loader(Stock Updating)\n");
+    printf("4. Customer(Self Checkout)\n");
    
-     login = loginFun(users,4);
+    login = loginFun(users,4);
 
     int choice;
     switch(login)
