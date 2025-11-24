@@ -7,6 +7,7 @@
 
 int total_items = 40;
 int billItems = 0; 
+
 struct User 
 {
     char username[50];
@@ -139,7 +140,8 @@ void AddNewItem(struct inventory *items, int *total_items)
     newItem->itemCode = itemCode;
 
     printf("Enter Item Name: ");
-    scanf("%s", newItem->name);
+    //scanf("%s", newItem->name);
+    scanf(" %[^\n]", newItem->name);
 
     printf("Enter GST Code: ");
     scanf("%d", &newItem->gstCode);
@@ -208,7 +210,8 @@ void UpdateQuantity(struct inventory items[],int size)
     char name[100];
 
     printf("Enter Item Name: ");
-    scanf("%s",name);
+   // scanf("%s",name);
+   scanf(" %[^\n]", name);
 
     int itemCode = -1;
  
@@ -514,57 +517,6 @@ void LowStock(struct inventory items[],int size)
     return ;
 }
 
-void generateMonthlyGstReport(int month, int year) 
-{
-    FILE *fp = fopen("Reports/GST_Log.txt", "r");
-    if (!fp) 
-    {
-        printf("GST log file not found.\n");
-        return;
-    }
-
-    char line[200];
-    double monthlyGST = 0.0;
-    int invoiceCount = 0;
-
-    while (fgets(line, sizeof(line), fp)) 
-    {
-        char dateStr[20];
-        double gstAmount;
-        int invoiceNumber;
-
-        if (sscanf(line, "Invoice: %d | Date: %[^|] | GST: %lf", &invoiceNumber, dateStr, &gstAmount) == 3)
-         {
-            int day, mon, yr;
-            if (sscanf(dateStr, "%d-%d-%d", &day, &mon, &yr) == 3) {
-                if (mon == month && yr == year) {
-                    monthlyGST += gstAmount;
-                    invoiceCount++;
-                }
-            }
-        }
-    }
-
-    fclose(fp);
-    char reportFileName[100];
-    snprintf(reportFileName, sizeof(reportFileName), "Reports/Monthly_GST_Report_%04d_%02d.txt", year, month);
-    FILE *fpReport = fopen(reportFileName, "w");
-    if (!fpReport) {
-        printf("Failed to create monthly report file.\n");
-        return;
-    }
-
-    fprintf(fpReport, "================= Monthly GST Report =================\n");
-    fprintf(fpReport, "Month: %02d/%04d\n", month, year);
-    fprintf(fpReport, "-----------------------------------------------------\n");
-    fprintf(fpReport, "Total GST Collected: %.2f\n", monthlyGST);
-    fprintf(fpReport, "Total Invoices: %d\n", invoiceCount);
-    fprintf(fpReport, "=====================================================\n");
-    fclose(fpReport);
-
-    printf("Monthly GST report generated: %s\n", reportFileName);
-}
-
 void TopSellingItems() 
 {
     struct SalesData {
@@ -755,7 +707,7 @@ int main()
     users[0] = (struct User){"Shopkeeper","SK@123",1};
     users[1] = (struct User){"Cashier","C@123",2};
     users[2] = (struct User){"Loader","L@123",3};
-    users[3] = (struct User){"Custmer","123",4};
+    users[3] = (struct User){"Customer","123",4};
 
 
     int login = 0;
@@ -782,9 +734,8 @@ int main()
         printf("6. Update Quantity\n");
         printf("7. Generate Bill\n");
         printf("8. Show Low Stock Items\n"); 
-        printf("9. Exit\n");
-        printf("10. Generate Monthly GST Report\n");
-        printf("11. Show Top Selling Items\n");
+        printf("9. Show Top Selling Items \n");
+        printf("11. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -815,27 +766,17 @@ int main()
                 LowStock(items,total_items);
                 break;
             case 9:
-                printf("Exiting program...Thanks For Visiting.\n");
-                break;
-            case 10:  
+                TopSellingItems();
+                break; 
+            case 10:
             {
-                int month, year;
-                printf("Enter month (1-12): ");
-                scanf("%d", &month);
-                printf("Enter year (YYYY): ");
-                scanf("%d", &year);
-                generateMonthlyGstReport(month, year);
+               printf("Exiting program...Thanks For Visiting.\n");
                 break;
-             }
-            case 11:
-            {
-               TopSellingItems();
-               break; 
             }
             default:
                 printf("Invalid choice! Please try again.\n");
         }
-    } while(choice != 9);
+    } while(choice != 11);
     break;
 
 
