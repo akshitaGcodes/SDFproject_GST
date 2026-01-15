@@ -15,5 +15,8 @@ Where we provide the functions ;-
        8. Exit
 We are intially starting with 10 stationary items the inventory can be changed any time 
 
-Future plan includes a monthly gst report
+Future plan includes :-
+Expanding to any business option.
+Using a excel or list sheet to load items prices , quantity
+History being saved , updation in irl time.
 
